@@ -6,28 +6,28 @@ on:
       - main
 
 jobs:
-  test:
-    uses: ./.github/workflows/testing.yml
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    test:
+        uses: ./.github/workflows/testing.yml
+    build-and-push:
+        needs: test
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
 
-    steps:
-      - name: Code Checkout
-        uses: actions/checkout@v3
+        steps:
+          - name: Code Checkout
+            uses: actions/checkout@v3
 
-      - name: GitHub Container Registry Login
-        run: docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      
-      - name: Username to Lowercase
-        run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          - name: GitHub Container Registry Login
+            run: docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+          - name: Username to Lowercase
+            run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - name: Build FragmentServer Image
-        run: |
-          docker build -t ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest -f ./src/api/Dockerfile ./src/api
+          - name: Build FragmentServer Image
+            run: |
+                docker build -t ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest -f ./src/api/Dockerfile ./src/api
 
-      - name: Push FragmentServer Image
-        run: docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest
+          - name: Push FragmentServer Image
+            run: docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest
