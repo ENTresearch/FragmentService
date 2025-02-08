@@ -1,3 +1,6 @@
+DROP TABLE recordings CASCADE;
+DROP TABLE fragments;
+
 -- Create TABLE recordings
 CREATE TABLE recordings (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
