@@ -1,0 +1,77 @@
+services:
+  gateway:
+    build:
+      context: ./src/api
+      dockerfile: ./Dockerfile
+    container_name: gateway
+    #ports:
+    #  - "${API_PORT}:${API_PORT}"
+    volumes:
+      - ./src/api/gateway:/app/gateway  # App code
+      - ./src/api/tests:/app/tests  # Tests code
+      - ./src/api/requirements.txt:/requirements.txt  # Requirements code
+      - ./uploaded_files:/uploaded_files # Uploaded files directory
+    env_file: 
+      - .env
+      - .env.keys
+      - .env.testing
+    working_dir: /app
+    depends_on:
+        db:
+            condition: service_healthy
+    #command: ["pytest"]
+    restart: unless-stopped
+
+  caddy:
+    container_name: caddy
+    env_file: 
+      - .env
+      - .env.keys
+    restart: unless-stopped
+    build:
+      context: ./src/caddy
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+      - 5050:5050
+    volumes:
+      - ./data/caddy_data:/data
+      - ./data/caddy_config:/config
+    depends_on:
+      - gateway
+    environment:
+      PROXY_GATEWAY_SERVICE: gateway
+      PROXY_PGADMIN_SERVICE: pgadmin
+
+  db:
+    hostname: ${POSTGRES_HOST}
+    image: postgres:17.2-alpine
+    container_name: db
+    env_file: 
+      - .env
+      - .env.keys
+    #ports:
+    #  - "5432:5432"
+    volumes:
+      - ./data/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:9.0.0
+    container_name: pgadmin
+    env_file: 
+      - .env
+      - .env.keys
+    #ports:
+    #  - "5050:80"
+    volumes:
+      - ./data/pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    restart: unless-stopped

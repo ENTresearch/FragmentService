@@ -1,0 +1,30 @@
+http://{$API_DOMAIN} {
+    redir https://{$API_DOMAIN}{uri}
+}
+
+https://{$API_DOMAIN} {
+    tls {
+        protocols tls1.3
+    }
+    reverse_proxy /* {$PROXY_GATEWAY_SERVICE}:{$PROXY_GATEWAY_PORT} {
+        header_down Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
+}
+
+https://{$API_DOMAIN}:5050 {
+    tls {
+        protocols tls1.3
+    }
+    reverse_proxy {$PROXY_PGADMIN_SERVICE}:80 {
+        header_down Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
+}
+
+#https://{$API_DOMAIN}:5432 {
+#    tls {
+#        protocols tls1.3
+#    }
+#    reverse_proxy {$PROXY_DB}:5432 {
+#        header_down Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#    }
+#}

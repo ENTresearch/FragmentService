@@ -1,0 +1,14 @@
+# Files uploaded to the Fragment Server
+/uploaded_files/
+
+# Development environment variables
+.act.secrets
+.env.keys
+.env.testing
+.env.deploy
+
+/data/*
+!/data/test_data
+.secrets
+
+/scripts/log-in.sh
