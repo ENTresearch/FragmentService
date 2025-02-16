@@ -9,6 +9,8 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+        outputs:
+            commit_tag: $GITHUB_REF_NAME
         steps:
             - name: Checkout code
               uses: actions/checkout@v3

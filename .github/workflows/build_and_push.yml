@@ -1,10 +1,10 @@
 name: Build and Push FragmentServer Image
 
 on:
-  workflow_run:
-    workflows: ["Testing API"]
-    types:
-      - completed
+    workflow_run:
+        workflows: ["Testing API"]
+        types:
+        - completed
 
 jobs:
     build-and-push:
@@ -24,19 +24,12 @@ jobs:
           - name: Username to Lowercase
             run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-          - name: Set commit tag
-            id: get_tag
-            run: |
-              if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-                tag="${GITHUB_REF#refs/tags/}"
-              else
-                tag="latest"
-              fi
-              echo "commit_tag=$tag" >> $GITHUB_ENV
-          
+          - name: Pobierz commit tag z workflow_run
+            run: echo "IMAGE_TAG=${{ github.event.workflow_run.outputs.commit_tag }}" >> $GITHUB_ENV
+
           - name: Debug commit tag
-            run: | 
-                echo "Commit tag is: ${{ env.commit_tag }}"
+            run: |
+                echo "Commit tag is: ${{ env.IMAGE_TAG }}"
 
           - name: Build FragmentServer Image
             run: |
