@@ -25,7 +25,11 @@ jobs:
             run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
           - name: Set image tag
-            run: echo "IMAGE_TAG=${{ github.event.workflow_run.outputs.commit_tag }}" >> $GITHUB_ENV    
+            run: echo "IMAGE_TAG=${{ env.commit_tag }}" >> $GITHUB_ENV    
+          
+          - name: Debug commit tag
+            run: | 
+                echo "Commit tag is: ${{ env.commit_tag }}"
 
           - name: Build FragmentServer Image
             run: |

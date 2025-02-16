@@ -44,4 +44,4 @@ jobs:
                 else
                   tag="latest"
                 fi
-                echo "::set-output name=commit_tag::$tag"
+                echo "commit_tag=$tag" >> $GITHUB_ENV
