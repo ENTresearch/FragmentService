@@ -34,10 +34,15 @@ jobs:
 
             - name: Stop containers
               run: docker compose -f docker-compose.test.yml down
+            
+            - name: Debug event
+              run: |
+                echo "Event name: ${{ github.event_name }}"
+                echo "Event action: ${{ github.event.action }}"
 
     build-and-push:
         needs: test
-        if: github.event_name == 'release' && github.event.release.action == 'published'
+        if: github.event_name == 'release'
         runs-on: ubuntu-latest
         permissions:
             contents: read
