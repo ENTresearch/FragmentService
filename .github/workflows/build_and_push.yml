@@ -24,8 +24,15 @@ jobs:
           - name: Username to Lowercase
             run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-          - name: Set image tag
-            run: echo "IMAGE_TAG=${{ env.commit_tag }}" >> $GITHUB_ENV    
+          - name: Set commit tag
+            id: get_tag
+            run: |
+              if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+                tag="${GITHUB_REF#refs/tags/}"
+              else
+                tag="latest"
+              fi
+              echo "commit_tag=$tag" >> $GITHUB_ENV
           
           - name: Debug commit tag
             run: | 
