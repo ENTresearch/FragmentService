@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ -f .env ]; then
+    set -a
+    source .env
+    set +a
+else
+    echo ".env file not found!"
+    exit 1
+fi
+
 attempt=1
 max_attempts=30
 until docker exec $(docker ps -qf "name=db") pg_isready -U ${POSTGRES_USER} || [ $attempt -eq $max_attempts ]

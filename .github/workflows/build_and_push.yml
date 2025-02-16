@@ -1,15 +1,14 @@
 name: Build and Push FragmentServer Image
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Testing API"]
+    types:
+      - completed
 
 jobs:
-    test:
-        uses: ./.github/workflows/testing.yml
     build-and-push:
-        needs: test
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         permissions:
             contents: read

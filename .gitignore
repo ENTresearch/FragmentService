@@ -1,8 +1,13 @@
 # Files uploaded to the Fragment Server
 /uploaded_files/
 
+# PyCaches
+__pycache__/
+
+# macOS files
+.DS_Store
+
 # Development environment variables
-.act.secrets
 .env.keys
 .env.testing
 .env.deploy
