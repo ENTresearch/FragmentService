@@ -35,3 +35,13 @@ jobs:
         
             - name: Stop containers
               run: docker compose -f docker-compose.test.yml down
+              
+            - name: Set commit tag
+              id: get_tag
+              run: |
+                if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+                  tag="${GITHUB_REF#refs/tags/}"
+                else
+                  tag="latest"
+                fi
+                echo "::set-output name=commit_tag::$tag"
