@@ -42,7 +42,7 @@ async def verify_jwt_online(token: str = Depends(oauth2_scheme)):
             raise HTTPException(status_code=401, detail="Unauthorized user")
         return response.json()
     
-def verify_admin_jwt(token):#= Depends(oauth2_scheme)):
+def verify_admin_jwt(token: str = Depends(oauth2_scheme)):
     """Check if user has admin role while verifying the token validity"""
     user = verify_jwt(token)
     if user.get('app_metadata', {}).get('role') != 'admin':
