@@ -5,7 +5,7 @@ from gateway.database import get_db
 from gateway.auth import verify_jwt, verify_api_key, verify_admin_jwt, verify_admin_api_key
 from gateway.models import Recording, Fragment
 from gateway.schemas import RecordingCreate, FragmentCreate
-from gateway.file_manager import delete_recording_files, delete_user_directory, save_fragment_file, get_fragment_file_path, delete_fragment_file, verify_md5, file_response_with_md5
+from gateway.file_manager import delete_recording_files, save_fragment_file, get_fragment_file_path, delete_fragment_file, verify_md5, file_response_with_md5
 from gateway.utils import get_admin_recording, get_fragment_in_recording, generate_api_key, generate_api_secret
 
 import os
