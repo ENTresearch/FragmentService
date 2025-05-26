@@ -67,11 +67,11 @@ jobs:
           - name: Build FragmentService Image
             run: |
               docker build \
-                -t ghcr.io/${{ env.REPO_OWNER }}/FragmentService:${{ env.IMAGE_TAG }} \
-                -t ghcr.io/${{ env.REPO_OWNER }}/FragmentService:latest \
+                -t ghcr.io/${{ env.REPO_OWNER }}/fragmentservice:${{ env.IMAGE_TAG }} \
+                -t ghcr.io/${{ env.REPO_OWNER }}/fragmentservice:latest \
                 -f ./src/api/Dockerfile ./src/api
 
           - name: Push FragmentService Image
             run: |
-              docker push ghcr.io/${{ env.REPO_OWNER }}/FragmentService:${{ env.IMAGE_TAG }}
-              docker push ghcr.io/${{ env.REPO_OWNER }}/FragmentService:latest
+              docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentservice:${{ env.IMAGE_TAG }}
+              docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentservice:latest
