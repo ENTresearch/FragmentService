@@ -10,7 +10,7 @@ import base64
 def generate_api_secret() -> str:
     return base64.urlsafe_b64encode(os.urandom(64)).decode('utf-8')
 
-def generate_api_key(role, ref, iss = "fileserver", expiry_days = 365*10) -> str:
+def generate_api_key(role, ref, iss = "Fragment Service", expiry_days = 365*10) -> str:
     iat = datetime.datetime.now(datetime.timezone.utc)
     exp = iat + datetime.timedelta(days=expiry_days)
     
@@ -46,3 +46,12 @@ def get_fragment_in_recording(db: Session, recording_id: str, index: int, user_i
     if not fragment:
         raise HTTPException(status_code=404, detail="Fragment not found")
     return fragment, recording
+
+def get_admin_recording(db, user, recording_id: str) -> Recording:
+    """ Requires recording_id and returns corresponding recording metadata extracted from the database."""
+    if user.get('app_metadata', {}).get('role') != 'admin':
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    recording = db.query(Recording).filter_by(id=recording_id).first()
+    if not recording:
+        raise HTTPException(status_code=404, detail="Recording not found")
+    return recording

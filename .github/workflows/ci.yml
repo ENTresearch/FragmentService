@@ -64,14 +64,14 @@ jobs:
           - name: Debug commit tag
             run: 'echo "Commit tag is: ${{ env.IMAGE_TAG }}"'
 
-          - name: Build FragmentServer Image
+          - name: Build FragmentService Image
             run: |
               docker build \
-                -t ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:${{ env.IMAGE_TAG }} \
-                -t ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest \
+                -t ghcr.io/${{ env.REPO_OWNER }}/FragmentService:${{ env.IMAGE_TAG }} \
+                -t ghcr.io/${{ env.REPO_OWNER }}/FragmentService:latest \
                 -f ./src/api/Dockerfile ./src/api
 
-          - name: Push FragmentServer Image
+          - name: Push FragmentService Image
             run: |
-              docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:${{ env.IMAGE_TAG }}
-              docker push ghcr.io/${{ env.REPO_OWNER }}/fragmentserver:latest
+              docker push ghcr.io/${{ env.REPO_OWNER }}/FragmentService:${{ env.IMAGE_TAG }}
+              docker push ghcr.io/${{ env.REPO_OWNER }}/FragmentService:latest

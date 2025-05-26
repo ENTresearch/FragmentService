@@ -1,4 +1,4 @@
-# Files uploaded to the Fragment Server
+# Files uploaded to the Fragment Service
 /uploaded_files/
 
 # PyCaches
@@ -17,3 +17,4 @@ __pycache__/
 .secrets
 
 /scripts/log-in.sh
+/src/bash/test.sh

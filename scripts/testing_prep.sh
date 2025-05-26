@@ -18,7 +18,7 @@ EXPIRATION=$(($NOW + $EXPIRY_DAYS*24*3600))
 
 generate_jwt() {
   local role=$1
-  local payload="{\"iss\": \"fragmentserver\", \"role\": \"$role\", \"ref\": \"test\", \"iat\": $NOW, \"exp\": $EXPIRATION}"
+  local payload="{\"iss\": \"Fragment Service\", \"role\": \"$role\", \"ref\": \"test\", \"iat\": $NOW, \"exp\": $EXPIRATION}"
   
   node -e "const jwt = require('jsonwebtoken'); const payload = $payload; console.log(jwt.sign(payload, '$API_KEY_SECRET'))"
 }

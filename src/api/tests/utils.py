@@ -1,9 +1,10 @@
 import os
 from supabase import create_client, Client as SupabaseClient
 from pydantic import BaseModel
-
+import hashlib
 
 class User(BaseModel):
+    id: str = None
     login: str
     password: str
     api_key: str
@@ -38,6 +39,7 @@ def sign_in_to_supabase(supabase: SupabaseClient, user: User) -> str:
     response = supabase.auth.sign_in_with_password(
         {"email": user.login, "password": user.password}
     )
+    user.id = response.user.id
     return response.session.access_token
 
 def get_auth_headers(supabase: SupabaseClient, user: User) -> dict:
@@ -47,3 +49,10 @@ def get_auth_headers(supabase: SupabaseClient, user: User) -> dict:
             "Authorization": "Bearer " + token,
             "apikey": user.api_key
         }
+
+def md5_of_bytes(data: bytes) -> str:
+    return hashlib.md5(data).hexdigest()
+
+def get_test_file_bytes(path) -> bytes:
+    with open(path, "rb") as f:
+        return f.read()
